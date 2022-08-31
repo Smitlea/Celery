@@ -10,26 +10,25 @@ services:
       - 5000:5000
     volumes:
       - .:/test-project:ro
-    environment:
-      - REDIS_URL=redis://cache:6379/0
-    command: "python app.py"
+
   cache:
     image: redis
-    container_name: redis
+    container_name: database_redis
     networks:
       - net
     ports:
       - 6379:6379
+
   app:
     build: .
     networks:
       - net
-    command: "celery -A tasks.Celery_app worker --pool=solo -l info"
+    command: "celery -A tasks.Celery_app worker --pool=solo -l INFO"
     depends_on:
       - backend
       - cache
     volumes:
-      - .:/test-project:ro
+      - .:/test-project
     environment:
       - RESULT_BACKEND=redis://cache:6379/0
       - BROKER_URL=redis://cache:6379/0

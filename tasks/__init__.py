@@ -1,12 +1,17 @@
-from re import X
+import os
 from celery import Celery, Task
 import time
 
 
+CELERY_RESULT_BACKEND = os.environ.get(
+    'CELERY_RESULT_BACKEND', 'redis://localhost:6379/0')
+CELERY_BROKER_URL = os.environ.get(
+    'CELERY_BROKER_URL', 'redis://localhost:6379/0')
+
 Celery_app = Celery(
     __name__,
-    backend='redis://localhost:6379/0',
-    broker='redis://localhost:6379/1'
+    backend=CELERY_RESULT_BACKEND,
+    broker=CELERY_BROKER_URL
 )
 
 

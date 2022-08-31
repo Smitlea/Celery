@@ -1,9 +1,5 @@
 
 import json
-from unittest.mock import patch
-from urllib import request
-from webbrowser import get
-from tasks import add_celery, count
 from . import BaseTestCase
 
 
@@ -46,34 +42,5 @@ class TestAccountApi(BaseTestCase):
         )
         self.assertEqual(response.status_code, 200)
 
-    # @patch{'app.request.value.get'}
-    # def test_result(self):  # 測試結果
-    #     response = self.client.get(
-    #         '/result',
-    #         data=json.dumps({
-    #             'task_id': "123"
 
-    #         }),
-    #         content_type='application/json'
-    #     )
-
-    #     self.assertEqual(response.status_code, 200)
-
-
-# class TestCeleryTask(BaseTestCase):
-#     def test_tasks(self):  # 測試tasks
-#         response = self.client.get(
-#             '/add',
-#             data=json.dumps({
-#                 'id': "123"
-#             }),
-
-
-#             content_type='application/json'
-#         )
-
-#         response = AsyncResult(response)
-#         # task = add_celery(),
-#         # self.assertEqual(task),
-#         self.assertEqual(response.status_code, 200)
 # # pipenv run celery -A tasks.Celery_app worker --pool=solo -l info

@@ -7,6 +7,7 @@ from celery.result import AsyncResult
 
 app = Flask(__name__)
 
+
 api = Api(app, version='0.0.3',
           title='Flask-RESTX combine celery tasks', default_label="below", default="Function")
 
@@ -23,7 +24,7 @@ input_payload = api.model('輸入', {
     'recipient': fields.String(required=True, default='allen@gmail.com'),
     'title': fields.String(required=True, default='Celery combine test'),
     'content': fields.String(required=True, default='HIHI'),
-    'x': fields.Integer(requrid=True, default=0),
+
 })
 
 
@@ -45,7 +46,7 @@ class Register(Resource):
             return message
 
 
-@api.route('/get')
+@api.route('/count')
 @api.doc(params={'id': 'input'})
 class get(Resource):
     @api.marshal_with(account_output_data)
@@ -71,9 +72,10 @@ class result(Resource):
     @api.marshal_with(account_output_data)
     def get(self):
         getTask = request.values.get('task_id')
-        Smitlea = AsyncResult(getTask, app=Celery_app)
-        return (Smitlea.result)
+        taskResult = AsyncResult(getTask, app=Celery_app)
+
+        return {'status': 0, 'message': 'success', 'task_id': taskResult.result}
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port='5000')
+    app.run(host='0.0.0.0', debug=True, port=5000)
